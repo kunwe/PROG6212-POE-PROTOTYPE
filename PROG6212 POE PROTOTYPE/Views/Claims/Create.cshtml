@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Submit New Claim - PROG6212_POE_PROTOTYPE";
+}
+
+<h2>Submit New Monthly Claim</h2>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="ClaimDate" class="form-label">Claim Month</label>
+            <input type="month" class="form-control" id="ClaimDate" name="ClaimDate" required>
+        </div>
+        <div class="col-md-6">
+            <label for="HoursWorked" class="form-label">Total Hours Worked</label>
+            <input type="number" class="form-control" id="HoursWorked" name="HoursWorked" min="1" required>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="SupportingDocs" class="form-label">Upload Supporting Documents</label>
+        <input type="file" class="form-control" id="SupportingDocs" multiple>
+        <div class="form-text">Upload timesheets, attendance registers, or other relevant proof. Max 5MB per file.</div>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Submit Claim</button>
+        <a asp-action="Dashboard" asp-controller="Home" asp-route-role="Lecturer" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

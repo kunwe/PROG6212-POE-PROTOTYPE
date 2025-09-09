@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Login - PROG6212_POE_PROTOTYPE";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <h2 class="text-center mb-4">Login to ST10262122 _PROG6212_POE_PROTOTYPE</h2>
+        <form asp-action="Login" asp-controller="Home" method="post">
+            <div class="form-group mb-3">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Login As: </label>
+                <select class="form-control" name="role">
+                    <option value="Lecturer">Lecturer</option>
+                    <option value="Coordinator">Programme Coordinator</option>
+                    <option value="Manager">Academic Manager</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <hr>
+        <div class="text-center">
+            <a href="#" class="text-muted">Forgot your password?</a> |
+            <a asp-action="Register" class="text-muted">Register as a Lecturer</a>
+        </div>
+    </div>
+</div>
