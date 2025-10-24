@@ -1,122 +1,318 @@
 @{
-    ViewData["Title"] = "Submit New Claim - PROG6212_POE_PROTOTYPE";
+    ViewData["Title"] = "Dashboard - PROG6212_POE_PROTOTYPE";
+    string userRole = ViewBag.UserRole;
 }
 
-<h2>Submit New Monthly Claim</h2>
+<h1 class="display-4">@userRole Dashboard</h1>
 <hr />
 
-@if (TempData["SuccessMessage"] != null)
+@if (userRole == "Lecturer")
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- LECTURER DASHBOARD -->
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a asp-action="Create" asp-controller="Claims" class="btn btn-success btn-lg">
+                        <i class="bi bi-plus-circle"></i> Submit New Monthly Claim
+                    </a>
+                </div>
+                <div class="text-end">
+                    <small class="text-muted">Quick Stats</small>
+                    <div>
+                        <span class="badge bg-primary">Total Claims: 3</span>
+                        <span class="badge bg-success">Approved: 1</span>
+                        <span class="badge bg-warning">Pending: 1</span>
+                        <span class="badge bg-danger">Rejected: 1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Status Tracker -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-graph-up"></i> Claim Status Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-success" style="width: 33%"></div>
+                            </div>
+                            <small class="text-muted">Approved Claims</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-warning" style="width: 33%"></div>
+                            </div>
+                            <small class="text-muted">Pending Review</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-danger" style="width: 33%"></div>
+                            </div>
+                            <small class="text-muted">Rejected Claims</small>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-secondary" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted">In Progress</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="bi bi-list-check"></i> Your Previous Claims</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Claim Month</th>
+                                    <th>Hours</th>
+                                    <th>Hourly Rate</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- SAMPLE DATA FOR THE PROTOTYPE -->
+                                <tr>
+                                    <td>1001</td>
+                                    <td>August 2025</td>
+                                    <td>40</td>
+                                    <td>R 300.00</td>
+                                    <td>R 12,000.00</td>
+                                    <td><span class="badge bg-success">Approved</span></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-success" style="width: 100%">Complete</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewClaimDetails(1001)">
+                                            <i class="bi bi-eye"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1002</td>
+                                    <td>September 2025</td>
+                                    <td>35</td>
+                                    <td>R 300.00</td>
+                                    <td>R 10,500.00</td>
+                                    <td><span class="badge bg-danger">Rejected</span></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-danger" style="width: 100%">Rejected</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewFeedback(1002)">
+                                            <i class="bi bi-chat-left-text"></i> View Feedback
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1003</td>
+                                    <td>October 2025</td>
+                                    <td>45</td>
+                                    <td>R 300.00</td>
+                                    <td>R 13,500.00</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 50%">Under Review</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary" disabled>
+                                            <i class="bi bi-clock"></i> Pending
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
-
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="ClaimDate" class="form-label">Claim Month</label>
-            <input type="month" class="form-control" id="ClaimDate" name="ClaimDate" required>
-        </div>
-        <div class="col-md-6">
-            <label for="HoursWorked" class="form-label">Total Hours Worked</label>
-            <input type="number" class="form-control" id="HoursWorked" name="HoursWorked" min="1" step="0.5" required>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="HourlyRate" class="form-label">Hourly Rate (R)</label>
-            <input type="number" class="form-control" id="HourlyRate" name="HourlyRate" min="0" step="0.01" required>
-        </div>
-        <div class="col-md-6">
-            <label for="TotalAmount" class="form-label">Total Amount (R)</label>
-            <input type="text" class="form-control" id="TotalAmount" readonly>
-            <small class="form-text text-muted">Automatically calculated: Hours × Hourly Rate</small>
+else if (userRole == "Coordinator" || userRole == "Manager")
+{
+    <!-- COORDINATOR/MANAGER DASHBOARD -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2><i class="bi bi-clipboard-check"></i> Claims Management</h2>
+                <div class="text-end">
+                    <a asp-action="Review" asp-controller="Claims" class="btn btn-primary btn-lg">
+                        <i class="bi bi-search"></i> Review All Claims
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="mb-3">
-        <label for="Notes" class="form-label">Additional Notes</label>
-        <textarea class="form-control" id="Notes" name="Notes" rows="3" placeholder="Enter any additional information about this claim..."></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="SupportingDocuments" class="form-label">Upload Supporting Documents</label>
-        <input type="file" class="form-control" id="SupportingDocuments" name="SupportingDocuments" multiple accept=".pdf,.docx,.xlsx,.doc,.xls,.png,.jpg,.jpeg">
-        <div class="form-text">
-            <small class="text-info">
-                <i class="bi bi-info-circle"></i> Supported formats: PDF, DOCX, XLSX, DOC, XLS, PNG, JPG, JPEG<br />
-                <i class="bi bi-info-circle"></i> Maximum file size: 5MB per file
-            </small>
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h3 class="card-title">3</h3>
+                    <p class="card-text">Pending Claims</p>
+                </div>
+            </div>
         </div>
-        <div id="fileList" class="mt-2"></div>
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h3 class="card-title">12</h3>
+                    <p class="card-text">Approved This Month</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-danger text-white">
+                <div class="card-body">
+                    <h3 class="card-title">2</h3>
+                    <p class="card-text">Rejected This Month</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h3 class="card-title">R 156K</h3>
+                    <p class="card-text">Total Approved Value</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <button type="submit" class="btn btn-primary btn-lg">
-            <i class="bi bi-send"></i> Submit Claim
-        </button>
-        <a asp-action="Dashboard" asp-controller="Home" asp-route-role="Lecturer" class="btn btn-secondary btn-lg">
-            <i class="bi bi-x-circle"></i> Cancel
-        </a>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="bi bi-exclamation-triangle"></i> Claims Requiring Your Approval</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Lecturer Name</th>
+                                    <th>Claim Date</th>
+                                    <th>Hours</th>
+                                    <th>Hourly Rate</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th>Documents</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- SAMPLE DATA FOR THE PROTOTYPE -->
+                                <tr>
+                                    <td>1003</td>
+                                    <td>Dr. Sarah Smith</td>
+                                    <td>October 2025</td>
+                                    <td>45</td>
+                                    <td>R 300.00</td>
+                                    <td>R 13,500.00</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewDocuments(1003)">
+                                            <i class="bi bi-eye"></i> View (2)
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success" onclick="approveClaim(1003)">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectClaim(1003)">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1004</td>
+                                    <td>Prof. John Doe</td>
+                                    <td>October 2025</td>
+                                    <td>38</td>
+                                    <td>R 350.00</td>
+                                    <td>R 13,300.00</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" onclick="viewDocuments(1004)">
+                                            <i class="bi bi-eye"></i> View (1)
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success" onclick="approveClaim(1004)">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectClaim(1004)">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</form>
+}
 
 @section Scripts {
     <script>
-        // Calculate total amount automatically
-        function calculateTotal() {
-            var hours = parseFloat(document.getElementById('HoursWorked').value) || 0;
-            var rate = parseFloat(document.getElementById('HourlyRate').value) || 0;
-            var total = hours * rate;
-            document.getElementById('TotalAmount').value = 'R ' + total.toFixed(2);
+        function viewClaimDetails(claimId) {
+            alert('Viewing details for Claim #' + claimId);
+            // In a real application, this would open a modal with claim details
         }
 
-        document.getElementById('HoursWorked').addEventListener('input', calculateTotal);
-        document.getElementById('HourlyRate').addEventListener('input', calculateTotal);
+        function viewFeedback(claimId) {
+            alert('Feedback for Claim #' + claimId + ': Hours claimed exceed the contracted limit.');
+            // In a real application, this would open a modal with feedback
+        }
 
-        // Display selected files
-        document.getElementById('SupportingDocuments').addEventListener('change', function(e) {
-            var fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
+        function viewDocuments(claimId) {
+            alert('Viewing documents for Claim #' + claimId);
+            // In a real application, this would open a modal with document list
+        }
 
-            for (var i = 0; i < e.target.files.length; i++) {
-                var file = e.target.files[i];
-                var fileSize = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB
-
-                var fileDiv = document.createElement('div');
-                fileDiv.className = 'alert alert-info alert-sm p-2 mb-1';
-                fileDiv.innerHTML = '<i class="bi bi-file-earmark"></i> ' + file.name + ' (' + fileSize + ' MB)';
-                fileList.appendChild(fileDiv);
+        function approveClaim(claimId) {
+            if (confirm('Are you sure you want to approve Claim #' + claimId + '?')) {
+                alert('Claim #' + claimId + ' has been approved!');
+                location.reload();
             }
-        });
+        }
 
-        // Form validation
-        document.querySelector('form').addEventListener('submit', function(e) {
-            var files = document.getElementById('SupportingDocuments').files;
-            var maxSize = 5 * 1024 * 1024; // 5MB
-            var allowedTypes = ['.pdf', '.docx', '.xlsx', '.doc', '.xls', '.png', '.jpg', '.jpeg'];
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var extension = '.' + file.name.split('.').pop().toLowerCase();
-
-                if (file.size > maxSize) {
-                    e.preventDefault();
-                    alert('File "' + file.name + '" exceeds the maximum size of 5MB.');
-                    return false;
-                }
-
-                if (allowedTypes.indexOf(extension) === -1) {
-                    e.preventDefault();
-                    alert('File type "' + extension + '" is not allowed. Allowed types: PDF, DOCX, XLSX, PNG, JPG, JPEG');
-                    return false;
-                }
+        function rejectClaim(claimId) {
+            var reason = prompt('Please provide a reason for rejecting Claim #' + claimId + ':');
+            if (reason && reason.trim()) {
+                alert('Claim #' + claimId + ' has been rejected. Reason: ' + reason);
+                location.reload();
             }
-        });
+        }
     </script>
 }
