@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace PROG6212_POE_PROTOTYPE.Models
 {
@@ -8,7 +8,13 @@ namespace PROG6212_POE_PROTOTYPE.Models
         public int ClaimId { get; set; } // Foreign Key to Claim
         public string FileName { get; set; }
         public string FilePath { get; set; }
+        public string ContentType { get; set; }
         public long FileSize { get; set; }
         public DateTime UploadDate { get; set; }
+
+        public SupportingDocument()
+        {
+            UploadDate = DateTime.Now;
+        }
     }
 }
