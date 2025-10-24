@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PROG6212_POE_PROTOTYPE.Models
 {
@@ -28,5 +28,7 @@ namespace PROG6212_POE_PROTOTYPE.Models
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public string Role { get; set; }
+        public DateTime DateOfBirth { get; set; }
     }
 }
