@@ -1,11 +1,21 @@
-﻿@{
+@{
     ViewData["Title"] = "Submit New Claim - PROG6212_POE_PROTOTYPE";
 }
 
 <h2>Submit New Monthly Claim</h2>
 <hr />
 
-<form asp-action="Create" method="post">
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="ClaimDate" class="form-label">Claim Month</label>
@@ -13,18 +23,100 @@
         </div>
         <div class="col-md-6">
             <label for="HoursWorked" class="form-label">Total Hours Worked</label>
-            <input type="number" class="form-control" id="HoursWorked" name="HoursWorked" min="1" required>
+            <input type="number" class="form-control" id="HoursWorked" name="HoursWorked" min="1" step="0.5" required>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="HourlyRate" class="form-label">Hourly Rate (R)</label>
+            <input type="number" class="form-control" id="HourlyRate" name="HourlyRate" min="0" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+            <label for="TotalAmount" class="form-label">Total Amount (R)</label>
+            <input type="text" class="form-control" id="TotalAmount" readonly>
+            <small class="form-text text-muted">Automatically calculated: Hours × Hourly Rate</small>
         </div>
     </div>
 
     <div class="mb-3">
-        <label for="SupportingDocs" class="form-label">Upload Supporting Documents</label>
-        <input type="file" class="form-control" id="SupportingDocs" multiple>
-        <div class="form-text">Upload timesheets, attendance registers, or other relevant proof. Max 5MB per file.</div>
+        <label for="Notes" class="form-label">Additional Notes</label>
+        <textarea class="form-control" id="Notes" name="Notes" rows="3" placeholder="Enter any additional information about this claim..."></textarea>
     </div>
 
     <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Submit Claim</button>
-        <a asp-action="Dashboard" asp-controller="Home" asp-route-role="Lecturer" class="btn btn-secondary">Cancel</a>
+        <label for="SupportingDocuments" class="form-label">Upload Supporting Documents</label>
+        <input type="file" class="form-control" id="SupportingDocuments" name="SupportingDocuments" multiple accept=".pdf,.docx,.xlsx,.doc,.xls,.png,.jpg,.jpeg">
+        <div class="form-text">
+            <small class="text-info">
+                <i class="bi bi-info-circle"></i> Supported formats: PDF, DOCX, XLSX, DOC, XLS, PNG, JPG, JPEG<br />
+                <i class="bi bi-info-circle"></i> Maximum file size: 5MB per file
+            </small>
+        </div>
+        <div id="fileList" class="mt-2"></div>
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-send"></i> Submit Claim
+        </button>
+        <a asp-action="Dashboard" asp-controller="Home" asp-route-role="Lecturer" class="btn btn-secondary btn-lg">
+            <i class="bi bi-x-circle"></i> Cancel
+        </a>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        // Calculate total amount automatically
+        function calculateTotal() {
+            var hours = parseFloat(document.getElementById('HoursWorked').value) || 0;
+            var rate = parseFloat(document.getElementById('HourlyRate').value) || 0;
+            var total = hours * rate;
+            document.getElementById('TotalAmount').value = 'R ' + total.toFixed(2);
+        }
+
+        document.getElementById('HoursWorked').addEventListener('input', calculateTotal);
+        document.getElementById('HourlyRate').addEventListener('input', calculateTotal);
+
+        // Display selected files
+        document.getElementById('SupportingDocuments').addEventListener('change', function(e) {
+            var fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            for (var i = 0; i < e.target.files.length; i++) {
+                var file = e.target.files[i];
+                var fileSize = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB
+
+                var fileDiv = document.createElement('div');
+                fileDiv.className = 'alert alert-info alert-sm p-2 mb-1';
+                fileDiv.innerHTML = '<i class="bi bi-file-earmark"></i> ' + file.name + ' (' + fileSize + ' MB)';
+                fileList.appendChild(fileDiv);
+            }
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            var files = document.getElementById('SupportingDocuments').files;
+            var maxSize = 5 * 1024 * 1024; // 5MB
+            var allowedTypes = ['.pdf', '.docx', '.xlsx', '.doc', '.xls', '.png', '.jpg', '.jpeg'];
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var extension = '.' + file.name.split('.').pop().toLowerCase();
+
+                if (file.size > maxSize) {
+                    e.preventDefault();
+                    alert('File "' + file.name + '" exceeds the maximum size of 5MB.');
+                    return false;
+                }
+
+                if (allowedTypes.indexOf(extension) === -1) {
+                    e.preventDefault();
+                    alert('File type "' + extension + '" is not allowed. Allowed types: PDF, DOCX, XLSX, PNG, JPG, JPEG');
+                    return false;
+                }
+            }
+        });
+    </script>
+}
