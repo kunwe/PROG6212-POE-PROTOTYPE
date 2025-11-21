@@ -1,44 +1,32 @@
 using System.Diagnostics;
+using Contract_Monthly_Claim_System.Models;
 using Microsoft.AspNetCore.Mvc;
-using PROG6212_POE_PROTOTYPE.Models;
 
-namespace PROG6212_POE_PROTOTYPE.Controllers
+namespace Contract_Monthly_Claim_System.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: /Home/Index (Default page - the login screen)
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Login(string email, string password, string role)
-        {
-
-            return RedirectToAction("Dashboard", new { role = role });
-        }
-
-        // GET: /Home/Dashboard?role=Lecturer
-        public IActionResult Dashboard(string role)
-        {
-            // Pass the role to the view so it can display the correct dashboard.
-            ViewBag.UserRole = role;
-            return View();
-        }
-
-        public IActionResult Register()
+        public IActionResult Privacy()
         {
             return View();
         }
 
-        // POST: /Home/Register
-        // This action handles the form submission.
-        [HttpPost] // This attribute is crucial to distinguish this from the GET version
-        public IActionResult Register(UserRegistrationModel model)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            TempData["SuccessMessage"] = "Registration successful! Your account is pending approval by an administrator.";
-            return RedirectToAction("Index"); // Redirect back to the login page
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
