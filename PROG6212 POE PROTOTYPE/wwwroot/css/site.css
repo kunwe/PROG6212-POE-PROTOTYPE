@@ -1,22 +1,53 @@
 html {
-  font-size: 14px;
+    /* Base font size remains the same */
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* === COLOURFUL BACKGROUND (Changed to purple/yellow/white) === */
 body {
-  margin-bottom: 60px;
+    /* A smooth, professional gradient background - using a light yellow-white to a soft lavender */
+    background: linear-gradient(135deg, #fcfbe7 0%, #e0d9f0 100%); /* Very light yellow/White to a soft lavender */
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
 }
+
+/* Focus color change - changed to #673AB7 (Deep Purple) */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #673AB7; /* Changed to purple focus */
+}
+
+/* === CUSTOM CARD STYLES (No color change needed, keeping white/grey look) === */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+.card-title {
+    color: #2c3e50; /* Keeping dark text for readability */
+    font-weight: 700;
+}
+
+/* === HERO SECTION STYLE (Changed to a high-contrast yellow-to-purple gradient) === */
+.hero-section {
+    /* Gradient change - changed to a vibrant yellow to deep purple gradient (#ffeb3b, #673AB7) */
+    background: linear-gradient(to right, #ffeb3b 0%, #673AB7 100%);
+    color: white; /* Using white text for contrast on the dark purple end */
+    padding: 3rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    /* Box shadow change to match the deep purple color */
+    box-shadow: 0 4px 15px rgba(103, 58, 1
